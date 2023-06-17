@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace AttendanceLog {
   public partial class AttendanceLogForm : Form {
-    private readonly Main main = new Main();
+    private readonly AttendanceLogMain main = new AttendanceLogMain();
 
     public AttendanceLogForm() {
       InitializeComponent();
