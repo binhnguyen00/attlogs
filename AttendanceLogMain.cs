@@ -50,5 +50,9 @@ namespace AttendanceLog {
       }
       return "0";
     }
+
+    public void TestGetFromDatatp() {
+      utils.TestGetFromDatatpAsync();
+    }
   }
 }

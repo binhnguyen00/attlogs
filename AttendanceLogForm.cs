@@ -24,7 +24,7 @@ namespace AttendanceLog {
     }
 
     private void SaveToDatatp_Click(object sender, EventArgs e) {
-      // TODO: Save to Datatp database
+      main.TestGetFromDatatp();
     }
 
     private void FindAllLogs_Click(object sender, EventArgs e) {

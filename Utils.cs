@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using datatp;
 
 /* Function usages
   1. ReadGeneralLogData: Read Attendance records and Write them into the internal buffer of the PC. return true | false
@@ -102,17 +105,25 @@ namespace AttendanceLog {
 
       if ("".Equals(requestStatus)) {
         MessageBox.Show("Select Status to Get from Device", "Warning");
+      } else {
+        int statusCode = int.Parse(requestStatus[0].ToString());
+        if (availableStatusCode.Contains(statusCode)) {
+          int iMachineNumber = 1;
+          bool operation = axCZKEM1.GetDeviceStatus(iMachineNumber, statusCode, ref iValue);
+          if (!operation) {
+            MessageBox.Show("Get Status Fail", "Warning");
+          }
+        } else MessageBox.Show(statusCode.ToString() + "\n" + availableStatusCode.Contains(statusCode).ToString());
       }
-      int statusCode = int.Parse(requestStatus[0].ToString());
-      if (availableStatusCode.Contains(statusCode)) {
-        int iMachineNumber = 1;
-        bool operation = axCZKEM1.GetDeviceStatus(iMachineNumber, statusCode, ref iValue);
-        if (!operation) {
-          MessageBox.Show("Get Status Fail", "Warning");
-        }
-      } else MessageBox.Show(statusCode.ToString() + "\n" + availableStatusCode.Contains(statusCode).ToString());
-
       return iValue.ToString();
+    }
+
+    public async Task TestGetFromDatatpAsync() {
+      DatatpHttpClient client = new DatatpHttpClient("http://localhost:7080/");
+      //string result = await client.Get("rest/v1.0.0/mock/**?param1=value1&param2=value2");
+      string body = "{\"Name\":\"John Doe\",\"Age\":30}";
+      string result = await client.Post("rest/v1.0.0/mock/**", body);
+      MessageBox.Show(result);
     }
   }
 }
