@@ -74,10 +74,13 @@ namespace AttendanceLog {
         client = new DatatpHttpClient("http://localhost:7080/");
       }
       string accessToken = utils.LoginToDatatp(client, loginId, password, company);
-      if (accessToken.ToString() != "Null" || accessToken.ToString() != null) {
+      if (accessToken != null) {
         isLogin = true;
         this.accessToken = accessToken;
-      } else isLogin = false;
+      } else {
+        isLogin = false;
+        MessageBox.Show("Wrong LoginId or Password", "Warning");
+      }
       return isLogin;
     }
 

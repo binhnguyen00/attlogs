@@ -173,7 +173,9 @@ namespace AttendanceLog {
       string authorization = dataObject["authorization"].ToString();
       JObject authorizationObject = JsonConvert.DeserializeObject<JObject>(authorization);
       string accessToken = authorizationObject["authorization"].ToString();
-      return accessToken;
+      if (!"".Equals(accessToken)) {
+        return accessToken;
+      } else return null;
     }
 
     public void SaveAttLogsToDatatpTimeTrackings(DatatpHttpClient client) {

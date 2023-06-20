@@ -232,7 +232,7 @@
       this.connectToDatatpBtn.Name = "connectToDatatpBtn";
       this.connectToDatatpBtn.Size = new System.Drawing.Size(75, 23);
       this.connectToDatatpBtn.TabIndex = 18;
-      this.connectToDatatpBtn.Text = "Login";
+      this.connectToDatatpBtn.Text = "Sign In";
       this.connectToDatatpBtn.UseVisualStyleBackColor = true;
       this.connectToDatatpBtn.Click += new System.EventHandler(this.ConnectToDatatpBtn_Click);
       // 
@@ -244,9 +244,9 @@
       this.connectionStateToDatatpLabel.Location = new System.Drawing.Point(8, 217);
       this.connectionStateToDatatpLabel.Name = "connectionStateToDatatpLabel";
       this.connectionStateToDatatpLabel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-      this.connectionStateToDatatpLabel.Size = new System.Drawing.Size(69, 15);
+      this.connectionStateToDatatpLabel.Size = new System.Drawing.Size(78, 15);
       this.connectionStateToDatatpLabel.TabIndex = 19;
-      this.connectionStateToDatatpLabel.Text = "Not Login";
+      this.connectionStateToDatatpLabel.Text = "Signed Out";
       // 
       // AttendanceLogForm
       // 

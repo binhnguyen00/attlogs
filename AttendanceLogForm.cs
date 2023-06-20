@@ -70,10 +70,10 @@ namespace AttendanceLog {
     }
 
     private void ConnectToDatatpBtn_Click(object sender, EventArgs e) {
-      if (connectToDatatpBtn.Text == "Logout") {
+      if (connectToDatatpBtn.Text == "Sign Out") {
         main.LogoutFromDatatp();
-        connectToDatatpBtn.Text = "Login";
-        connectionStateToDatatpLabel.Text = "Not Login";
+        connectToDatatpBtn.Text = "Sign In";
+        connectionStateToDatatpLabel.Text = "Signed Out";
         connectionStateToDatatpLabel.BackColor = Color.Red;
         return;
       }
@@ -82,8 +82,8 @@ namespace AttendanceLog {
       string password = datatpPasswordTextBox.Text;
       isLogin = main.LoginToDatatp(loginId, password);
       if (isLogin) {
-        connectToDatatpBtn.Text = "Logout";
-        connectionStateToDatatpLabel.Text = "Login";
+        connectToDatatpBtn.Text = "Sign Out";
+        connectionStateToDatatpLabel.Text = "Signed In";
         connectionStateToDatatpLabel.BackColor = Color.LightGreen;
       }
     }
