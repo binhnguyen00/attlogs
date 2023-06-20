@@ -48,6 +48,8 @@
       this.datatpPasswordTextBox = new System.Windows.Forms.TextBox();
       this.connectToDatatpBtn = new System.Windows.Forms.Button();
       this.connectionStateToDatatpLabel = new System.Windows.Forms.Label();
+      this.datatpRestUrlTextBox = new System.Windows.Forms.TextBox();
+      this.restUrlLabel = new System.Windows.Forms.Label();
       this.SuspendLayout();
       // 
       // PortLabel
@@ -138,15 +140,15 @@
       // 
       // connectionStateLabel
       // 
-      this.connectionStateLabel.AutoSize = true;
       this.connectionStateLabel.BackColor = System.Drawing.Color.Red;
       this.connectionStateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.connectionStateLabel.Location = new System.Drawing.Point(8, 93);
       this.connectionStateLabel.Name = "connectionStateLabel";
       this.connectionStateLabel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-      this.connectionStateLabel.Size = new System.Drawing.Size(101, 15);
+      this.connectionStateLabel.Size = new System.Drawing.Size(101, 18);
       this.connectionStateLabel.TabIndex = 9;
       this.connectionStateLabel.Text = "Not Connected";
+      this.connectionStateLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
       // 
       // deviceStatusComboBox
       // 
@@ -193,7 +195,7 @@
       // 
       this.datatpLoginIdLabel.AutoSize = true;
       this.datatpLoginIdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.datatpLoginIdLabel.Location = new System.Drawing.Point(5, 160);
+      this.datatpLoginIdLabel.Location = new System.Drawing.Point(6, 191);
       this.datatpLoginIdLabel.Name = "datatpLoginIdLabel";
       this.datatpLoginIdLabel.Size = new System.Drawing.Size(45, 13);
       this.datatpLoginIdLabel.TabIndex = 14;
@@ -203,7 +205,7 @@
       // 
       this.datatpPasswordLabel.AutoSize = true;
       this.datatpPasswordLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.datatpPasswordLabel.Location = new System.Drawing.Point(5, 186);
+      this.datatpPasswordLabel.Location = new System.Drawing.Point(6, 217);
       this.datatpPasswordLabel.Name = "datatpPasswordLabel";
       this.datatpPasswordLabel.Size = new System.Drawing.Size(53, 13);
       this.datatpPasswordLabel.TabIndex = 15;
@@ -211,7 +213,7 @@
       // 
       // datatpLoginIdTextBox
       // 
-      this.datatpLoginIdTextBox.Location = new System.Drawing.Point(72, 160);
+      this.datatpLoginIdTextBox.Location = new System.Drawing.Point(72, 191);
       this.datatpLoginIdTextBox.Name = "datatpLoginIdTextBox";
       this.datatpLoginIdTextBox.Size = new System.Drawing.Size(118, 20);
       this.datatpLoginIdTextBox.TabIndex = 16;
@@ -219,7 +221,7 @@
       // 
       // datatpPasswordTextBox
       // 
-      this.datatpPasswordTextBox.Location = new System.Drawing.Point(72, 186);
+      this.datatpPasswordTextBox.Location = new System.Drawing.Point(72, 217);
       this.datatpPasswordTextBox.Name = "datatpPasswordTextBox";
       this.datatpPasswordTextBox.Size = new System.Drawing.Size(118, 20);
       this.datatpPasswordTextBox.TabIndex = 17;
@@ -228,7 +230,7 @@
       // 
       // connectToDatatpBtn
       // 
-      this.connectToDatatpBtn.Location = new System.Drawing.Point(115, 214);
+      this.connectToDatatpBtn.Location = new System.Drawing.Point(115, 245);
       this.connectToDatatpBtn.Name = "connectToDatatpBtn";
       this.connectToDatatpBtn.Size = new System.Drawing.Size(75, 23);
       this.connectToDatatpBtn.TabIndex = 18;
@@ -238,21 +240,41 @@
       // 
       // connectionStateToDatatpLabel
       // 
-      this.connectionStateToDatatpLabel.AutoSize = true;
       this.connectionStateToDatatpLabel.BackColor = System.Drawing.Color.Red;
       this.connectionStateToDatatpLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.connectionStateToDatatpLabel.Location = new System.Drawing.Point(8, 217);
+      this.connectionStateToDatatpLabel.Location = new System.Drawing.Point(8, 248);
       this.connectionStateToDatatpLabel.Name = "connectionStateToDatatpLabel";
       this.connectionStateToDatatpLabel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-      this.connectionStateToDatatpLabel.Size = new System.Drawing.Size(78, 15);
+      this.connectionStateToDatatpLabel.Size = new System.Drawing.Size(78, 18);
       this.connectionStateToDatatpLabel.TabIndex = 19;
       this.connectionStateToDatatpLabel.Text = "Signed Out";
+      this.connectionStateToDatatpLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+      // 
+      // datatpRestUrlTextBox
+      // 
+      this.datatpRestUrlTextBox.Location = new System.Drawing.Point(8, 165);
+      this.datatpRestUrlTextBox.Name = "datatpRestUrlTextBox";
+      this.datatpRestUrlTextBox.Size = new System.Drawing.Size(182, 20);
+      this.datatpRestUrlTextBox.TabIndex = 20;
+      this.datatpRestUrlTextBox.Text = "http://localhost:7080/";
+      // 
+      // restUrlLabel
+      // 
+      this.restUrlLabel.AutoSize = true;
+      this.restUrlLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.restUrlLabel.Location = new System.Drawing.Point(6, 149);
+      this.restUrlLabel.Name = "restUrlLabel";
+      this.restUrlLabel.Size = new System.Drawing.Size(54, 13);
+      this.restUrlLabel.TabIndex = 21;
+      this.restUrlLabel.Text = "Rest URL";
       // 
       // AttendanceLogForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(976, 681);
+      this.Controls.Add(this.restUrlLabel);
+      this.Controls.Add(this.datatpRestUrlTextBox);
       this.Controls.Add(this.connectionStateToDatatpLabel);
       this.Controls.Add(this.datatpLoginIdTextBox);
       this.Controls.Add(this.datatpPasswordTextBox);
@@ -305,6 +327,8 @@
     private System.Windows.Forms.TextBox datatpPasswordTextBox;
     private System.Windows.Forms.Button connectToDatatpBtn;
     private System.Windows.Forms.Label connectionStateToDatatpLabel;
+    private System.Windows.Forms.TextBox datatpRestUrlTextBox;
+    private System.Windows.Forms.Label restUrlLabel;
   }
 }
 

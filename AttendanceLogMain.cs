@@ -66,22 +66,22 @@ namespace AttendanceLog {
       }
     }
 
-    public bool LoginToDatatp(string loginId, string password, string company = "", string baseRestUrl = null) {
-      DatatpHttpClient client;
-      if (baseRestUrl != null) {
-        client = new DatatpHttpClient(baseRestUrl);
+    public bool LoginToDatatp(string baseRestUrl, string loginId, string password, string company = "") {
+      if (baseRestUrl == null) {
+        MessageBox.Show("Wrong Datatp URL", "Warning");
+        return false;
       } else {
-        client = new DatatpHttpClient("http://localhost:7080/");
+        DatatpHttpClient client = new DatatpHttpClient(baseRestUrl);
+        string accessToken = utils.LoginToDatatp(client, loginId, password, company);
+        if (accessToken != null) {
+          isLogin = true;
+          this.accessToken = accessToken;
+        } else {
+          isLogin = false;
+          MessageBox.Show("Wrong LoginId or Password", "Warning");
+        }
+        return isLogin;
       }
-      string accessToken = utils.LoginToDatatp(client, loginId, password, company);
-      if (accessToken != null) {
-        isLogin = true;
-        this.accessToken = accessToken;
-      } else {
-        isLogin = false;
-        MessageBox.Show("Wrong LoginId or Password", "Warning");
-      }
-      return isLogin;
     }
 
     public bool LogoutFromDatatp() {

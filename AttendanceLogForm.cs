@@ -80,7 +80,8 @@ namespace AttendanceLog {
       bool isLogin;
       string loginId = datatpLoginIdTextBox.Text;
       string password = datatpPasswordTextBox.Text;
-      isLogin = main.LoginToDatatp(loginId, password);
+      string baseRestUrl = datatpRestUrlTextBox.Text;
+      isLogin = main.LoginToDatatp(baseRestUrl, loginId, password);
       if (isLogin) {
         connectToDatatpBtn.Text = "Sign Out";
         connectionStateToDatatpLabel.Text = "Signed In";
