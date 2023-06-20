@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Net.Http;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using datatp;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 /* Function usages
   1. ReadGeneralLogData: Read Attendance records and Write them into the internal buffer of the PC. return true | false
@@ -13,7 +15,7 @@ using datatp;
 */
 
 /* iMachineNumber 
-  In fact,when you are using the tcp/ip communication,this parameter will be ignored, 
+  In fact, when you are using the tcp/ip communication, this parameter will be ignored, 
   that is any integer will all right. Here we use 1 
 */
 
@@ -49,8 +51,6 @@ namespace AttendanceLog {
 
     public List<string> DownloadDataFromDevice() {
       string sdwEnrollNumber = "";
-      int idwTMachineNumber = 0;
-      int idwEMachineNumber = 0;
       int idwVerifyMode = 0;
       int idwInOutMode = 0;
       int idwYear = 0;
@@ -66,24 +66,21 @@ namespace AttendanceLog {
 
       List<string> records = new List<string>();
       int iMachineNumber = 1;
-      // axCZKEM1.EnableDevice(iMachineNumber, false); // Disable the device
+      //axCZKEM1.EnableDevice(iMachineNumber, false); // Disable the device
 
       bool readAble = axCZKEM1.ReadGeneralLogData(iMachineNumber);
       if (readAble) {
-        bool isReadingData = axCZKEM1.SSR_GetGeneralLogData(
-          iMachineNumber, out sdwEnrollNumber, out idwVerifyMode,
-          out idwInOutMode, out idwYear, out idwMonth, out idwDay,
-          out idwHour, out idwMinute, out idwSecond, ref idwWorkcode
-        );
         while (axCZKEM1.SSR_GetGeneralLogData(
           iMachineNumber, out sdwEnrollNumber, out idwVerifyMode,
           out idwInOutMode, out idwYear, out idwMonth, out idwDay,
           out idwHour, out idwMinute, out idwSecond, ref idwWorkcode
         )) {
           index += 1;
+          string date = idwDay + "/" + idwMonth + "/" + idwYear + "@" + idwHour + ":" + idwMinute + ":" + idwSecond;
           records.Add(
-            index+"\t"+sdwEnrollNumber+"\t\t"+idwTMachineNumber+"\t\t"+idwEMachineNumber+"\t\t"+idwVerifyMode+"\t\t"+idwInOutMode+
-            "\t\t"+idwYear+"/"+idwMonth+"/"+idwDay+" "+idwHour+":"+idwMinute+":"+idwSecond
+            index + "\t" + sdwEnrollNumber + "\t\t" + idwVerifyMode + "\t\t" + idwInOutMode +
+            "\t\t" + idwWorkcode +
+            "\t\t" + date
           );
         }
       } else {
@@ -95,8 +92,54 @@ namespace AttendanceLog {
         }
       }
 
-      // axCZKEM1.EnableDevice(iMachineNumber, true); // Enable the device
+      //axCZKEM1.EnableDevice(iMachineNumber, true); // Enable the device
       return records;
+    }
+
+    public string DownloadDataFromDeviceAsJson() {
+      string sdwEnrollNumber = "";
+      int idwVerifyMode = 0;
+      int idwInOutMode = 0;
+      int idwYear = 0;
+      int idwMonth = 0;
+      int idwDay = 0;
+      int idwHour = 0;
+      int idwMinute = 0;
+      int idwSecond = 0;
+      int idwWorkcode = 0;
+      int index = 0;
+      int iMachineNumber = 1;
+
+      Dictionary<int, Dictionary<string, string>> resultMap = new Dictionary<int, Dictionary<string, string>>();
+      bool readAble = axCZKEM1.ReadGeneralLogData(iMachineNumber);
+
+      if (readAble) {
+        while (axCZKEM1.SSR_GetGeneralLogData(
+          iMachineNumber, out sdwEnrollNumber, out idwVerifyMode,
+          out idwInOutMode, out idwYear, out idwMonth, out idwDay,
+          out idwHour, out idwMinute, out idwSecond, ref idwWorkcode
+        )) {
+          index += 1;
+          string date = idwDay + "/" + idwMonth + "/" + idwYear + "@" + idwHour + ":" + idwMinute + ":" + idwSecond;
+          Dictionary<string, string> responseMap = new Dictionary<string, string> {
+            { "time", date },
+            { "employeeCardId", sdwEnrollNumber },
+            { "scannerMachineId", "" + iMachineNumber },
+          };
+          resultMap.Add(index, responseMap);
+        }
+      } else {
+        int idwErrorCode = 0;
+        axCZKEM1.GetLastError(ref idwErrorCode);
+        if (idwErrorCode != 0) {
+          MessageBox.Show("Can't Read data from Device\n ErrorCode: " + idwErrorCode.ToString(), "Error");
+        } else {
+          MessageBox.Show("The Machine return 0 Log\n ErrorCode: " + idwErrorCode.ToString(), "Error");
+        }
+      }
+
+      string result = JsonConvert.SerializeObject(resultMap);
+      return result;
     }
 
     public string GetDeviceStatus(string requestStatus) {
@@ -113,17 +156,29 @@ namespace AttendanceLog {
           if (!operation) {
             MessageBox.Show("Get Status Fail", "Warning");
           }
-        } else MessageBox.Show(statusCode.ToString() + "\n" + availableStatusCode.Contains(statusCode).ToString());
+        } else
+          MessageBox.Show(statusCode.ToString() + "\n" + availableStatusCode.Contains(statusCode).ToString());
       }
       return iValue.ToString();
     }
 
-    public async Task TestGetFromDatatpAsync() {
-      DatatpHttpClient client = new DatatpHttpClient("http://localhost:7080/");
-      //string result = await client.Get("rest/v1.0.0/mock/**?param1=value1&param2=value2");
-      string body = "{\"Name\":\"John Doe\",\"Age\":30}";
-      string result = await client.Post("rest/v1.0.0/mock/**", body);
-      MessageBox.Show(result);
+    public string LoginToDatatp(DatatpHttpClient client, string loginId, string password, string company = "") {
+      DatatpAuthorization datatpAuthorization = new DatatpAuthorization();
+      string loginModel = datatpAuthorization.CreateLoginModel(loginId, password, company);
+      HttpResponseMessage response = client.Post("rest/v1.0.0/company/acl/authenticate", loginModel);
+      Task<string> task = response.Content.ReadAsStringAsync();
+      JObject resultObject = client.GetResponseResultAsObject(task);
+      string data = resultObject["data"].ToString();
+      JObject dataObject = JsonConvert.DeserializeObject<JObject>(data);
+      string authorization = dataObject["authorization"].ToString();
+      JObject authorizationObject = JsonConvert.DeserializeObject<JObject>(authorization);
+      string accessToken = authorizationObject["authorization"].ToString();
+      return accessToken;
+    }
+
+    public void SaveAttLogsToDatatpTimeTrackings(DatatpHttpClient client) {
+      string attLogs = DownloadDataFromDeviceAsJson();
+      HttpResponseMessage response = client.Put("rest/v1.0.0/company/hr/timesheet/attlogs", attLogs);
     }
   }
 }

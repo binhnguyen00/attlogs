@@ -24,17 +24,16 @@ namespace AttendanceLog {
     }
 
     private void SaveToDatatp_Click(object sender, EventArgs e) {
-      main.TestGetFromDatatp();
+      main.SaveAttLogsToDatatpTimeTrackings();
     }
 
     private void FindAllLogs_Click(object sender, EventArgs e) {
       attLogsTextBox.Text = 
         "Index\t" +
         "Enroll Number\t\t" +
-        "TMachineNumber\t" +
-        "EMachineNumber\t" +
         "Verify Mode\t" +
         "In Out Mode\t" +
+        "Work Code\t" +
         "Date Time";
       List<string> records = main.DownloadDataFromDevice();
       foreach (string record in records) {
@@ -42,11 +41,11 @@ namespace AttendanceLog {
       }
     }
 
-    private void ConnectToMachineBtn_Click(object sender, EventArgs e) {
-      if (connectToMachineBtn.Text=="Disconnect") {
+    private void ConnectToDeviceBtn_Click(object sender, EventArgs e) {
+      if (connectToDeviceBtn.Text == "Disconnect") {
         main.DisconnectDevice();
-        connectToMachineBtn.Text="Connect";
-        connectionStateLabel.Text="Not Connected";
+        connectToDeviceBtn.Text = "Connect";
+        connectionStateLabel.Text = "Not Connected";
         connectionStateLabel.BackColor=Color.Red;
         return;
       }
@@ -55,18 +54,37 @@ namespace AttendanceLog {
       string port = portTextBox.Text;
       isConnected = main.ConnectToDeviceViaIPAndPort(ipAddress, port);
       if (isConnected) {
-        connectToMachineBtn.Text="Disconnect";
-        connectionStateLabel.Text="Connected";
-        connectionStateLabel.BackColor=Color.LightGreen;
+        connectToDeviceBtn.Text = "Disconnect";
+        connectionStateLabel.Text = "Connected";
+        connectionStateLabel.BackColor = Color.LightGreen;
         return;
       } 
     }
 
-    private void getDeviceStatusBtn_Click(object sender, EventArgs e) {
+    private void GetDeviceStatusBtn_Click(object sender, EventArgs e) {
       string requestStatus = deviceStatusComboBox.Text;
       string resultFromDevice = main.GetDeviceStatus(requestStatus);
       if (!"0".Equals(resultFromDevice)) {
         MessageBox.Show(resultFromDevice, requestStatus);
+      }
+    }
+
+    private void ConnectToDatatpBtn_Click(object sender, EventArgs e) {
+      if (connectToDatatpBtn.Text == "Logout") {
+        main.LogoutFromDatatp();
+        connectToDatatpBtn.Text = "Login";
+        connectionStateToDatatpLabel.Text = "Not Login";
+        connectionStateToDatatpLabel.BackColor = Color.Red;
+        return;
+      }
+      bool isLogin;
+      string loginId = datatpLoginIdTextBox.Text;
+      string password = datatpPasswordTextBox.Text;
+      isLogin = main.LoginToDatatp(loginId, password);
+      if (isLogin) {
+        connectToDatatpBtn.Text = "Logout";
+        connectionStateToDatatpLabel.Text = "Login";
+        connectionStateToDatatpLabel.BackColor = Color.LightGreen;
       }
     }
   }
