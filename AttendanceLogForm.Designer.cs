@@ -224,6 +224,7 @@
       this.datatpPasswordTextBox.Size = new System.Drawing.Size(118, 20);
       this.datatpPasswordTextBox.TabIndex = 17;
       this.datatpPasswordTextBox.Text = "admin";
+      this.datatpPasswordTextBox.UseSystemPasswordChar = true;
       // 
       // connectToDatatpBtn
       // 
