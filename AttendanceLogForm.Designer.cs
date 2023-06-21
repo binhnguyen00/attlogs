@@ -245,7 +245,7 @@
       this.connectionStateToDatatpLabel.Location = new System.Drawing.Point(8, 248);
       this.connectionStateToDatatpLabel.Name = "connectionStateToDatatpLabel";
       this.connectionStateToDatatpLabel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-      this.connectionStateToDatatpLabel.Size = new System.Drawing.Size(78, 18);
+      this.connectionStateToDatatpLabel.Size = new System.Drawing.Size(101, 18);
       this.connectionStateToDatatpLabel.TabIndex = 19;
       this.connectionStateToDatatpLabel.Text = "Signed Out";
       this.connectionStateToDatatpLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
