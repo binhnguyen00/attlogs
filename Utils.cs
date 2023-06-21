@@ -110,23 +110,29 @@ namespace AttendanceLog {
       int index = 0;
       int iMachineNumber = 1;
 
-      Dictionary<int, Dictionary<string, string>> resultMap = new Dictionary<int, Dictionary<string, string>>();
-      bool readAble = axCZKEM1.ReadGeneralLogData(iMachineNumber);
+      Dictionary<string, Dictionary<string, object>> resultMap = new Dictionary<string, Dictionary<string, object>>();
 
+      bool readAble = axCZKEM1.ReadGeneralLogData(iMachineNumber);
       if (readAble) {
+        List<string> resultMapKeys = new List<string>();
         while (axCZKEM1.SSR_GetGeneralLogData(
           iMachineNumber, out sdwEnrollNumber, out idwVerifyMode,
           out idwInOutMode, out idwYear, out idwMonth, out idwDay,
           out idwHour, out idwMinute, out idwSecond, ref idwWorkcode
         )) {
           index += 1;
-          string date = idwDay + "/" + idwMonth + "/" + idwYear + "@" + idwHour + ":" + idwMinute + ":" + idwSecond;
+          string time = idwDay + "/" + idwMonth + "/" + idwYear + "@" + idwHour + ":" + idwMinute + ":" + idwSecond;
+          string date = idwDay + "/" + idwMonth + "/" + idwYear;
           Dictionary<string, string> responseMap = new Dictionary<string, string> {
-            { "time", date },
+            { "index", index.ToString() },
+            { "time", time },
             { "employeeCardId", sdwEnrollNumber },
             { "scannerMachineId", "" + iMachineNumber },
           };
-          resultMap.Add(index, responseMap);
+          if (!resultMap.ContainsKey(date)) {
+            resultMap[date] = new Dictionary<string, object>();
+          }
+          resultMap[date].Add(index.ToString(), responseMap);
         }
       } else {
         int idwErrorCode = 0;
